@@ -1,0 +1,57 @@
+services:
+  taskify-db:
+    image: img-taskify-db:latest
+    container_name: "taskify-db"
+    env_file:
+      - .env
+    build:
+      context: ./database
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - compose_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  taskify-api:
+    image: img-taskify-api:latest
+    container_name: "taskify-api"
+    env_file:
+      - .env
+    build:
+      context: ./packages/server
+    ports:
+      - ${API_PORT}:${API_PORT}
+    depends_on:
+      taskify-db:
+        condition: service_healthy
+    networks:
+      - compose_network
+
+  taskify-web:
+    image: img-taskify-web:latest
+    container_name: "taskify-web"
+    env_file:
+      - .env
+    build:
+      context: ./packages/client
+      args:
+        - API_CONN=${API_CONN}
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    depends_on:
+      - taskify-api
+    networks:
+      - compose_network
+
+volumes:
+  database_data:
+
+networks:
+  compose_network:
+    driver: bridge
