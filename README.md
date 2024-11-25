@@ -23,12 +23,15 @@ DB_PORT=your_port_to_expose
 API_PORT=your_server_port
 WEB_PORT=your_client_port
 
+DB_HOST=your_db_host
+API_HOST=your_server_host
+
 POSTGRES_USER=your_db_user
 POSTGRES_PASSWORD=your_db_user_password
 POSTGRES_DB=your_db_name
 
-DB_CONN=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@taskify-db:${DB_PORT}/${POSTGRES_DB}?schema=public
-API_CONN=http://localhost:${API_PORT}
+DB_CONN=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DB_HOST}:${DB_PORT}/${POSTGRES_DB}?schema=public
+API_CONN=http://${API_HOST}:${API_PORT}
 ```
 
 ## Running services locally for development

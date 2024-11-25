@@ -15,7 +15,7 @@ Ensure the following environment variables are set in the `.env` file:
 
 ```dotenv
 WEB_PORT=your_client_port
-API_CONN=http://your_api_host:your_API_port
+API_CONN=http://your_api_host:your_server_port
 ```
 
 ## Running the client locally for development
